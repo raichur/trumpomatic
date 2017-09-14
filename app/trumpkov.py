@@ -1,6 +1,6 @@
 import markov
 
-tweets = open("/Users/josh/Developer/trumpkov/tweets.txt","r")
+tweets = open("tweets.txt","r")
 
 trumpkov = markov.Markov(tweets)
 
