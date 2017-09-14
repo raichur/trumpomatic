@@ -7,6 +7,21 @@
   <title>Document</title>
 </head>
 <body>
-  {{markovtext}}
+
+  <div id="text"></div>
+  <b><div id="tweet_button">Get Tweet</div></b>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <script>
+  function getData() {
+    $.getJSON("http://localhost:5000/gettext", function(data) {
+      $("#text").text(data);
+    });
+  }
+  getData();
+  $("#tweet_button").click(getData);
+
+
+  </script>
 </body>
 </html>
