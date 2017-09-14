@@ -4,24 +4,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Trump-o-matic</title>
 </head>
 <body>
 
-  <div id="text"></div>
-  <b><div id="tweet_button">Get Tweet</div></b>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <style>
+  html, body {
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    text-align: center;
+  }
+  section {
+    width: 60%;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 10%;
+  }
+  header {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  h1 {
+    font-weight: 800;
+    font-size: 4rem;
+    text-align: center;
+    line-height: 1;
+    padding: 0;
+    margin: 10px;
+  }
+  h3 {
+    font-weight: 300;
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 10px;
+    text-align: center;
+  }
+  a {
+    color: #c57230;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all ease 0.3s;
+  }
+  #tweet_button {
+    font-weight: 800;
+    color: #c57230;
+    cursor: pointer;
+    display: inline;
+    padding: 40px;
+    transition: all ease 0.3s;
+  }
+  a:hover, #tweet_button:hover {
+    color: #ed8738;
+  }
+  #button_wrapper {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+  #text {
+    font-size: 1.8rem;
+    font-weight: 400;
+  }
+  </style>
 
+  <section>
+    <header>
+      <h1>Trump-o-matic</h1>
+      <h3>A <a href="http://twitter.com/realDonaldTrump">@realDonaldTrump</a> markov chain text generator</h3>
+    </header>
+
+    <div id="text"></div>
+    <div id="button_wrapper"><h3 id="tweet_button">Get New Tweet</h3></div>
+  </section>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script>
+  var parser = new DOMParser;
+  function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    var handleRegex = /(^|[^@\w])@(\w{1,15})\b/g;
+    var with_links = text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
+    var with_handles = with_links.replace(handleRegex, '$1<a href="http://twitter.com/$2">@$2</a>');
+    return with_handles;
+}
   function getData() {
     $.getJSON("http://localhost:5000/gettext", function(data) {
-      $("#text").text(data);
+      $("#text").html(urlify(data));
     });
   }
   getData();
   $("#tweet_button").click(getData);
-
-
   </script>
 </body>
 </html>
